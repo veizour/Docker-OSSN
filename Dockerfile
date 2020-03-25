@@ -64,19 +64,19 @@ RUN \
 
 # Update ossn.config.db configs with variables
 RUN \
-  set 's/<<host>>/${DBHost}/g' ossn.config.db
-  set 's/<<port>>/${DBPort}/g' ossn.config.db
-  set 's/<<password>>/${DBPassword}/g' ossn.config.db
+  set 's/<<host>>/${DBHost}/g' ossn.config.db && \
+  set 's/<<port>>/${DBPort}/g' ossn.config.db && \
+  set 's/<<password>>/${DBPassword}/g' ossn.config.db && \
   set 's/<<dbname>>/${DBUsername}/g' ossn.config.db
 
 # Update ossn.config.site configs with variables
 RUN \
-  set 's/<<siteurl>>/${SiteURL}/g' ossn.config.site
+  set 's/<<siteurl>>/${SiteURL}/g' ossn.config.site && \
   set 's/<<datadir>>/${DataDirectory}/g' ossn.config.site
 
 # Update ossn.conf configs with variables
 RUN \
-  set 's/<<admin@server>>/${adminlogin}/g' ossn.conf
+  set 's/<<admin@server>>/${adminlogin}/g' ossn.conf && \
   set 's/<<servername>>/${servername}/g' ossn.conf
   
 ADD ossn.conf /etc/apache2/000-default.conf
