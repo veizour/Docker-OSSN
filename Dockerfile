@@ -43,10 +43,6 @@ RUN service apache2 restart
 RUN rm -R -f /var/www
 RUN mkdir -p /var/www/html/ossn/
   
-ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
-RUN unzip /tmp/build.zip -d /tmp
-RUN cp -R /tmp/ossn/. /var/www/html/ossn/.
-
 # Update apache configuration with this one
 RUN \
   mv /etc/apache2/sites-available/000-default.conf /etc/apache2/000-default.conf && \
