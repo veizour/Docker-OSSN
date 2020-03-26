@@ -45,10 +45,9 @@ RUN \
   rm -R -f /var/www && \
   ln -s /web /var/www
   
-RUN cd /tmp/.
 ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
 RUN unzip /tmp/build.zip -d /tmp
-RUN mkdir /var/www/html
+RUN mkdir -p /var/www/html
 RUN cp -r /tmp/ossn /var/www/html/.
 
 RUN chown -R www-data:www-data /var/www/html/ossn/
