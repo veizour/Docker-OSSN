@@ -41,7 +41,6 @@ RUN rm -rf /var/lib/apt/lists/*
  
 RUN service apache2 restart
 RUN rm -R -f /var/www
-#RUN ln -s -v /web /var/www
 RUN mkdir -p /var/www/html/ossn/
   
 ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
@@ -54,30 +53,31 @@ RUN \
   rm /etc/apache2/sites-available/* && \
   rm /etc/apache2/apache2.conf && \
   ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
-  ln -s /var/log/apache2 /logs
+  ln -s /var/log/apache2 /logs && \
+  ln -s -v /web /var/www
 
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
-ADD ossn.config.db /var/www/html/ossn/configuration/ossn.config.db
-ADD ossn.config.site /var/www/html/ossn/configuration/ossn.config.site
+ADD ossn.config.db /var/www/html/ossn/configurations/ossn.config.db
+ADD ossn.config.site /var/www/html/ossn/configurations/ossn.config.site
 
 # Update ossn.config.db configs with variables
 RUN \
-  sed 's/<<host>>/${DBHost}/g' /var/www/html/ossn/configuration/ossn.config.db && \
-  sed 's/<<port>>/${DBPort}/g' /var/www/html/ossn/configuration/ossn.config.db && \
-  sed 's/<<password>>/${DBPassword}/g' /var/www/html/ossn/configuration/ossn.config.db && \
-  sed 's/<<dbname>>/${DBUsername}/g' /var/www/html/ossn/configuration/ossn.config.db
+  sed 's/<<host>>/${DBHost}/g' /var/www/html/ossn/configurations/ossn.config.db \
+  's/<<port>>/${DBPort}/g' /var/www/html/ossn/configurations/ossn.config.db \
+  's/<<password>>/${DBPassword}/g' /var/www/html/ossn/configurations/ossn.config.db \
+  's/<<dbname>>/${DBUsername}/g' /var/www/html/ossn/configurations/ossn.config.db
 
 # Update ossn.config.site configs with variables
 RUN \
-  sed 's/<<siteurl>>/${SiteURL}/g' /var/www/html/ossn/configuration/ossn.config.site && \
-  sed 's/<<datadir>>/${DataDirectory}/g' /var/www/html/ossn/configuration/ossn.config.site
+  sed 's/<<siteurl>>/${SiteURL}/g' /var/www/html/ossn/configurations/ossn.config.site \
+  's/<<datadir>>/${DataDirectory}/g' /var/www/html/ossn/configurations/ossn.config.site
 
 # Update ossn.conf configs with variables
 RUN \
-  sed 's/<<admin@server>>/${adminlogin}/g' /etc/apache2/sites-available/000-default.conf && \
-  sed 's/<<servername>>/${servername}/g' /etc/apache2/sites-available/000-default.conf
+  sed 's/<<admin@server>>/${adminlogin}/g' /etc/apache2/sites-available/000-default.conf \
+  's/<<servername>>/${servername}/g' /etc/apache2/sites-available/000-default.conf
 
 # Manually set the apache environment variables in order to get apache to work immediately.
 RUN \
@@ -93,7 +93,7 @@ EXPOSE 80 443
 
 # The www directory and proxy config location
 #VOLUME ["/config", "/web", "/logs"]
-VOLUME ["/config", "/logs", "/data"]
+VOLUME ["/config", "/logs", "/data", "/web"]
 
 RUN chown -R www-data:www-data /var/www/html/ossn/
 RUN chmod -R 755 /var/www/html/ossn/
