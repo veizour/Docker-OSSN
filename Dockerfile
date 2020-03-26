@@ -50,7 +50,7 @@ RUN unzip /tmp/build.zip -d /tmp
 RUN ls /
 RUN ls /var
 RUN ls /var/www
-RUN mkdir -p /var/www/html
+RUN mkdir /var/www/html
 RUN cp -r /tmp/ossn /var/www/html/.
 #RUN mkdir -p /web/html
 #RUN cp -r /tmp/ossn /web/html/.
