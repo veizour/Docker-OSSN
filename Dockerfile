@@ -27,7 +27,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y mc
 RUN apt-get install -y tmux
-
+RUN apt-get install -y wget
 
 # Install proxy Dependencies
 RUN apt-get update -y
