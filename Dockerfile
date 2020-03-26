@@ -70,10 +70,10 @@ RUN \
 
 # Update ossn.conf configs with variables
 RUN \
-  set 's/<<admin@server>>/${adminlogin}/g' ossn.conf && \
-  set 's/<<servername>>/${servername}/g' ossn.conf
+  set 's/<<admin@server>>/${adminlogin}/g' 000-default.conf && \
+  set 's/<<servername>>/${servername}/g' 000-default.conf
   
-ADD ossn.conf /etc/apache2/000-default.conf
+ADD 000-default.conf /etc/apache2/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
 ADD ossn.config.db /var/www/html/ossn/configuration/ossn.config.db
