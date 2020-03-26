@@ -43,7 +43,7 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN service apache2 restart
 RUN rm -R -f /var/www
 #RUN ln -s -v /web /var/www
-RUN mkdir -d /var/www/html/ossn/
+RUN mkdir -p /var/www/html/ossn/
   
 ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
 RUN unzip /tmp/build.zip -d /tmp
