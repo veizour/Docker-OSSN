@@ -31,7 +31,7 @@ if [ -f /var/www/html/ossn/configurations/ossn.config.db ]; then
   rm /var/www/html/ossn/configurations/ossn.config.db
 fi
 # Generate ossn conf files
-RUN echo \
+echo \
      "<VirtualHost *:80>\n" \
      "ServerAdmin "$adminlogin"\n" \
      "DocumentRoot /var/www/html/\n" \
@@ -48,7 +48,7 @@ RUN echo \
      "\n" \
      "</VirtualHost>" > /etc/apache2/sites-enabled/000-default.conf
      
-RUN echo \
+echo \
      "<?php\n" \
      "/**\n" \
      " * Open Source Social Network\n" \
@@ -63,7 +63,7 @@ RUN echo \
      "$Ossn->url = '"$servername"';\n" \
      "$Ossn->userdata = '"$DataDirectory"';\n" > /var/www/html/ossn/configurations/ossn.config.site
 
-RUN echo \
+echo \
      "<?php\n" \
      "/**\n" \
      " * Open Source Social Network\n" \
