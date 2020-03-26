@@ -9,7 +9,6 @@ ENV LANG            en_US.UTF-8
 ENV LANGUAGE        en_US.UTF-8
 ENV TERM xterm
 
-
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
@@ -49,10 +48,6 @@ ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp
 RUN unzip /tmp/build.zip -d /tmp
 RUN cp -R /tmp/ossn/. /var/www/html/ossn/.
 
-RUN chown -R www-data:www-data /var/www/html/ossn/
-RUN chmod -R 755 /var/www/html/ossn/
-RUN chown -R www-data:www-data /var/www/html/ossn_data
-  
 # Update apache configuration with this one
 RUN \
   mv /etc/apache2/sites-available/000-default.conf /etc/apache2/000-default.conf && \
@@ -99,6 +94,10 @@ EXPOSE 80 443
 # The www directory and proxy config location
 #VOLUME ["/config", "/web", "/logs"]
 VOLUME ["/config", "/logs", "/data"]
+
+RUN chown -R www-data:www-data /var/www/html/ossn/
+RUN chmod -R 755 /var/www/html/ossn/
+RUN chown -R www-data:www-data /data
 
 # Add our crontab file
 ADD crons.conf /root/crons.conf
