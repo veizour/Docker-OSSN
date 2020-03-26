@@ -1,5 +1,5 @@
 FROM phusion/baseimage:0.11
-MAINTAINER veizour
+MAINTAINER nando
 
 # Set correct environment variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,6 +8,7 @@ ENV LC_ALL          C.UTF-8
 ENV LANG            en_US.UTF-8
 ENV LANGUAGE        en_US.UTF-8
 ENV TERM xterm
+
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
@@ -21,27 +22,31 @@ CMD ["/sbin/my_init"]
  chown -R nobody:users /home
 
 
+RUN apt-get update
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y mc
 RUN apt-get install -y tmux
-RUN apt-get install -y wget
+RUN apt-get install -y php7.1-mysql
+RUN apt-get install -y php7.1-mysqlnd
+
 
 # Install proxy Dependencies
 RUN apt-get update -y
 RUN apt-get install -y apache2
-RUN apt-get install -y php7.1 php7.1-common libapache2-mod-php7.1 php7.1-mcrypt php7.1-cli php7.1-xml \
-                       php7.1-mysql php7.1-mysqlnd php7.1-gd php7.1-imagick php7.1-recode php7.1-tidy php7.1-xmlrpc \
+RUN apt-get install -y php7.1 libapache2-mod-php7.1 php7.1-mcrypt php7.1-cli php7.1-xml php7.1-zip \
+                       php7.1-mysql php7.1-gd php7.1-imagick php7.1-recode php7.1-tidy php7.1-xmlrpc \
                        php-curl php7.1-mbstring php7.1-soap php7.1-intl php7.1-ldap php7.1-imap php-xml \
-                       php7.1-sqlite php7.1-mcrypt php7.1-zip inotify-tools
+                       php7.1-sqlite php7.1-mcrypt inotify-tools php7.1-common
 
 RUN apt-get clean -y
 RUN rm -rf /var/lib/apt/lists/*
  
-RUN service apache2 restart
-RUN rm -R -f /var/www
-RUN mkdir -p /var/www/html/ossn/
+RUN \
+  service apache2 restart && \
+  rm -R -f /var/www && \
+  ln -s /web /var/www
   
 # Update apache configuration with this one
 RUN \
@@ -49,14 +54,11 @@ RUN \
   rm /etc/apache2/sites-available/* && \
   rm /etc/apache2/apache2.conf && \
   ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
-  ln -s /var/log/apache2 /logs && \
-  ln -s -v /web /var/www
+  ln -s /var/log/apache2 /logs
 
-#ADD proxy-config.conf /etc/apache2/000-default.conf
+ADD proxy-config.conf /etc/apache2/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
-#ADD ossn.config.db /var/www/html/ossn/configurations/ossn.config.db
-#ADD ossn.config.site /var/www/html/ossn/configurations/ossn.config.site
 
 # Manually set the apache environment variables in order to get apache to work immediately.
 RUN \
@@ -71,12 +73,7 @@ echo /var/run/apache2 > /etc/container_environment/APACHE_RUN_DIR
 EXPOSE 80 443
 
 # The www directory and proxy config location
-#VOLUME ["/config", "/web", "/logs"]
-VOLUME ["/config", "/logs", "/data", "/web"]
-
-RUN chown -R www-data:www-data /var/www/html/ossn/
-RUN chmod -R 755 /var/www/html/ossn/
-RUN chown -R www-data:www-data /data
+VOLUME ["/config", "/web", "/logs"]
 
 # Add our crontab file
 ADD crons.conf /root/crons.conf
