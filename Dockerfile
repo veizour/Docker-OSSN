@@ -22,23 +22,18 @@ CMD ["/sbin/my_init"]
  chown -R nobody:users /home
 
 
-RUN apt-get update
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y mc
 RUN apt-get install -y tmux
-RUN apt-get install -y php7.1-mysql
-RUN apt-get install -y php7.1-mysqlnd
-
 
 # Install proxy Dependencies
-RUN apt-get update -y
 RUN apt-get install -y apache2
 RUN apt-get install -y php7.1 libapache2-mod-php7.1 php7.1-mcrypt php7.1-cli php7.1-xml php7.1-zip \
-                       php7.1-mysql php7.1-gd php7.1-imagick php7.1-recode php7.1-tidy php7.1-xmlrpc \
+                       php7.1-mysql php7.1-mysqlnd php7.1-gd php7.1-imagick php7.1-recode php7.1-tidy \
                        php-curl php7.1-mbstring php7.1-soap php7.1-intl php7.1-ldap php7.1-imap php-xml \
-                       php7.1-sqlite php7.1-mcrypt inotify-tools php7.1-common
+                       php7.1-sqlite php7.1-mcrypt php7.1-common php7.1-xmlrpc inotify-tools
 
 RUN apt-get clean -y
 RUN rm -rf /var/lib/apt/lists/*
@@ -50,15 +45,67 @@ RUN \
   
 # Update apache configuration with this one
 RUN \
-  mv /etc/apache2/sites-available/000-default.conf /etc/apache2/000-default.conf && \
-  rm /etc/apache2/sites-available/* && \
-  rm /etc/apache2/apache2.conf && \
-  ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
-  ln -s /var/log/apache2 /logs
+echo "<VirtualHost *:80>" > /etc/apache2/000-default.conf && \
+echo "ServerAdmin "$adminlogin  >> /etc/apache2/000-default.conf && \
+echo "DocumentRoot /var/www/html/"  >> /etc/apache2/000-default.conf && \
+echo "ServerName "$servername  >> /etc/apache2/000-default.conf && \
+echo "" >> /etc/apache2/000-default.conf && \
+echo "<Directory /var/www/html/>"  >> /etc/apache2/000-default.conf && \
+echo "     Options FollowSymlinks" >> /etc/apache2/000-default.conf && \
+echo "     AllowOverride All" >> /etc/apache2/000-default.conf && \
+echo "     Require all granted" >> /etc/apache2/000-default.conf && \
+echo "</Directory>" >> /etc/apache2/000-default.conf && \
+echo "" >> /etc/apache2/000-default.conf && \
+echo "ErrorLog ${APACHE_LOG_DIR}/ossn_error.log" >> /etc/apache2/000-default.conf && \
+echo "CustomLog ${APACHE_LOG_DIR}/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
+echo "" >> /etc/apache2/000-default.conf && \
+echo "</VirtualHost>" >> /etc/apache2/000-default.conf
 
-ADD proxy-config.conf /etc/apache2/000-default.conf
+RUN \
+echo "<?php" > /etc/apache2/ossn.config.site && \
+echo "/**" >> /etc/apache2/ossn.config.site && \
+echo " * Open Source Social Network" >> /etc/apache2/ossn.config.site && \
+echo " *" >> /etc/apache2/ossn.config.site && \
+echo " * @package   (softlab24.com).ossn" >> /etc/apache2/ossn.config.site && \
+echo " * @author    OSSN Core Team <info@softlab24.com>" >> /etc/apache2/ossn.config.site && \
+echo " * @copyright (C) SOFTLAB24 LIMITED" >> /etc/apache2/ossn.config.site && \
+echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /etc/apache2/ossn.config.site && \
+echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.site && \
+echo " */" >> /etc/apache2/ossn.config.site && \
+echo "" >> /etc/apache2/ossn.config.site && \
+echo "$Ossn->url = '"$servername"';" >> /etc/apache2/ossn.config.site && \
+echo "$Ossn->userdata = '"$DataDirectory"';" >> /etc/apache2/ossn.config.site
+
+RUN \
+echo "<?php" > /etc/apache2/ossn.config.db && \
+echo "/**" >> /etc/apache2/ossn.config.db && \
+echo " * Open Source Social Network" >> /etc/apache2/ossn.config.db && \
+echo " *" >> /etc/apache2/ossn.config.db && \
+echo " * @package   (softlab24.com).ossn" >> /etc/apache2/ossn.config.db && \
+echo " * @author    OSSN Core Team <info@softlab24.com>" >> /etc/apache2/ossn.config.db && \
+echo " * @copyright (C) SOFTLAB24 LIMITED" >> /etc/apache2/ossn.config.db && \
+echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /etc/apache2/ossn.config.db && \
+echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.db && \
+echo " */" >> /etc/apache2/ossn.config.db && \
+echo "" >> /etc/apache2/ossn.config.db && \
+echo "// replace <<host>> with your database host name;" >> /etc/apache2/ossn.config.db && \
+echo "$Ossn->host = '"$DBHost"';" >> /etc/apache2/ossn.config.db && \
+echo "" >> /etc/apache2/ossn.config.db && \
+echo "// replace <<port>> with your database host name;" >> /etc/apache2/ossn.config.db && \
+echo "$Ossn->port = '"$DBPort"';" >> /etc/apache2/ossn.config.db && \
+echo "" >> /etc/apache2/ossn.config.db && \
+echo "// replace <<user>> with your database username;" >> /etc/apache2/ossn.config.db && \
+echo "$Ossn->user = '"$DBUser"';" >> /etc/apache2/ossn.config.db && \
+echo "" >> /etc/apache2/ossn.config.db && \
+echo "// replace <<password>> with your database password;" >> /etc/apache2/ossn.config.db && \
+echo "$Ossn->password = '"$DBPassword"';" >> /etc/apache2/ossn.config.db && \
+echo "" >> /etc/apache2/ossn.config.db && \
+echo "// replace <<dbname>> with your database name;" >> /etc/apache2/ossn.config.db && \
+echo "$Ossn->database = '"$DBName"';" >> /etc/apache2/ossn.config.db
+
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
+
 
 # Manually set the apache environment variables in order to get apache to work immediately.
 RUN \
