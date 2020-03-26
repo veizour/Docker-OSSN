@@ -43,12 +43,17 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN \
   service apache2 restart && \
   rm -R -f /var/www && \
-  ln -s /web /var/www
+  ln -s -v /web /var/www
   
 ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
 RUN unzip /tmp/build.zip -d /tmp
+RUN ls /
+RUN ls /var
+RUN ls /var/www
 RUN mkdir -p /var/www/html
 RUN cp -r /tmp/ossn /var/www/html/.
+#RUN mkdir -p /web/html
+#RUN cp -r /tmp/ossn /web/html/.
 
 RUN chown -R www-data:www-data /var/www/html/ossn/
 RUN chmod -R 755 /var/www/html/ossn/
