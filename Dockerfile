@@ -56,28 +56,28 @@ RUN \
   ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
   ln -s /var/log/apache2 /logs
 
-# Update ossn.config.db configs with variables
-RUN \
-  sed 's/<<host>>/${DBHost}/g' ossn.config.db && \
-  sed 's/<<port>>/${DBPort}/g' ossn.config.db && \
-  sed 's/<<password>>/${DBPassword}/g' ossn.config.db && \
-  sed 's/<<dbname>>/${DBUsername}/g' ossn.config.db
-
-# Update ossn.config.site configs with variables
-RUN \
-  sed 's/<<siteurl>>/${SiteURL}/g' ossn.config.site && \
-  sed 's/<<datadir>>/${DataDirectory}/g' ossn.config.site
-
-# Update ossn.conf configs with variables
-RUN \
-  sed 's/<<admin@server>>/${adminlogin}/g' 000-default.conf && \
-  sed 's/<<servername>>/${servername}/g' 000-default.conf
-  
-ADD 000-default.conf /etc/apache2/000-default.conf
+ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
 ADD ossn.config.db /var/www/html/ossn/configuration/ossn.config.db
 ADD ossn.config.site /var/www/html/ossn/configuration/ossn.config.site
+
+# Update ossn.config.db configs with variables
+RUN \
+  sed 's/<<host>>/${DBHost}/g' /var/www/html/ossn/configuration/ossn.config.db && \
+  sed 's/<<port>>/${DBPort}/g' /var/www/html/ossn/configuration/ossn.config.db && \
+  sed 's/<<password>>/${DBPassword}/g' /var/www/html/ossn/configuration/ossn.config.db && \
+  sed 's/<<dbname>>/${DBUsername}/g' /var/www/html/ossn/configuration/ossn.config.db
+
+# Update ossn.config.site configs with variables
+RUN \
+  sed 's/<<siteurl>>/${SiteURL}/g' /var/www/html/ossn/configuration/ossn.config.site && \
+  sed 's/<<datadir>>/${DataDirectory}/g' /var/www/html/ossn/configuration/ossn.config.site
+
+# Update ossn.conf configs with variables
+RUN \
+  sed 's/<<admin@server>>/${adminlogin}/g' /etc/apache2/sites-available/000-default.conf && \
+  sed 's/<<servername>>/${servername}/g' /etc/apache2/sites-available/000-default.conf
 
 # Manually set the apache environment variables in order to get apache to work immediately.
 RUN \
