@@ -116,6 +116,10 @@ echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR && \
 echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE && \
 echo /var/run/apache2 > /etc/container_environment/APACHE_RUN_DIR
 
+ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
+RUN unzip /tmp/build.zip -d /tmp
+RUN rm /tmp/build.zip
+
 # Expose Ports
 EXPOSE 80 443
 
