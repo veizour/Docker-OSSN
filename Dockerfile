@@ -55,8 +55,6 @@ RUN \
   ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
   ln -s /var/log/apache2 /logs && \
   ln -s -v /web /var/www
-  
-RUN mkdir /etc/apache2/sites-available/
 
 #ADD proxy-config.conf /etc/apache2/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
