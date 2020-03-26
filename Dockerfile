@@ -78,7 +78,7 @@ RUN echo \
      "<?php\n" \
      "/**\n" \
      " * Open Source Social Network\n" \
-     ' *\n" \
+     " *\n" \
      " * @package   (softlab24.com).ossn\n" \
      " * @author    OSSN Core Team <info@softlab24.com>\n" \
      " * @copyright (C) SOFTLAB24 LIMITED\n" \
