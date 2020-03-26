@@ -58,20 +58,20 @@ RUN \
 
 # Update ossn.config.db configs with variables
 RUN \
-  set 's/<<host>>/${DBHost}/g' ossn.config.db && \
-  set 's/<<port>>/${DBPort}/g' ossn.config.db && \
-  set 's/<<password>>/${DBPassword}/g' ossn.config.db && \
-  set 's/<<dbname>>/${DBUsername}/g' ossn.config.db
+  sed 's/<<host>>/${DBHost}/g' ossn.config.db && \
+  sed 's/<<port>>/${DBPort}/g' ossn.config.db && \
+  sed 's/<<password>>/${DBPassword}/g' ossn.config.db && \
+  sed 's/<<dbname>>/${DBUsername}/g' ossn.config.db
 
 # Update ossn.config.site configs with variables
 RUN \
-  set 's/<<siteurl>>/${SiteURL}/g' ossn.config.site && \
-  set 's/<<datadir>>/${DataDirectory}/g' ossn.config.site
+  sed 's/<<siteurl>>/${SiteURL}/g' ossn.config.site && \
+  sed 's/<<datadir>>/${DataDirectory}/g' ossn.config.site
 
 # Update ossn.conf configs with variables
 RUN \
-  set 's/<<admin@server>>/${adminlogin}/g' 000-default.conf && \
-  set 's/<<servername>>/${servername}/g' 000-default.conf
+  sed 's/<<admin@server>>/${adminlogin}/g' 000-default.conf && \
+  sed 's/<<servername>>/${servername}/g' 000-default.conf
   
 ADD 000-default.conf /etc/apache2/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
