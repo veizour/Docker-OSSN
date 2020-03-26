@@ -56,28 +56,71 @@ RUN \
   ln -s /var/log/apache2 /logs && \
   ln -s -v /web /var/www
 
-ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+# Generate ossn conf files
+RUN echo \
+     "<VirtualHost *:80>\n" \
+     "ServerAdmin "$adminlogin"\n" \
+     "DocumentRoot /var/www/html/\n" \
+     "ServerName "$servername"\n" \
+     "\n" \
+     "<Directory /var/www/html/>\n" \ 
+     "     Options FollowSymlinks\n" \
+     "     AllowOverride All\n" \
+     "     Require all granted\n" \
+     "</Directory>\n" \
+     "\n" \
+     "ErrorLog ${APACHE_LOG_DIR}/ossn_error.log\n" \
+     "CustomLog ${APACHE_LOG_DIR}/ossn_access.log combined\n" \
+     "\n" \
+     "</VirtualHost>" > /etc/apache2/000-default.conf
+     
+RUN echo \
+     "<?php\n" \
+     "/**\n" \
+     " * Open Source Social Network\n" \
+     ' *\n" \
+     " * @package   (softlab24.com).ossn\n" \
+     " * @author    OSSN Core Team <info@softlab24.com>\n" \
+     " * @copyright (C) SOFTLAB24 LIMITED\n" \
+     " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence\n" \
+     " * @link      https://www.opensource-socialnetwork.org/\n" \
+     " */\n" \
+     "\n" \
+     "$Ossn->url = '"$servername"';\n" \
+     "$Ossn->userdata = '"$DataDirectory"';\n" > /var/www/html/ossn/configurations/ossn.config.site
+
+RUN echo \
+     "<?php\n" \
+     "/**\n" \
+     " * Open Source Social Network\n" \
+     " *\n" \
+     " * @package   (softlab24.com).ossn\n" \
+     " * @author    OSSN Core Team <info@softlab24.com>\n" \
+     " * @copyright (C) SOFTLAB24 LIMITED\n" \
+     " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence\n" \
+     " * @link      https://www.opensource-socialnetwork.org/\n" \
+     " */\n" \
+     "\n" \
+     "// replace <<host>> with your database host name;\n" \
+     "$Ossn->host = '"$DBHost"';\n" \
+     "\n" \
+     "// replace <<port>> with your database host name;\n" \
+     "$Ossn->port = '"$DBPort"';\n" \
+     "\n" \
+     "// replace <<user>> with your database username;\n" \
+     "$Ossn->user = '"$DBUser"';\n" \
+     "\n" \
+     "// replace <<password>> with your database password;\n" \
+     "$Ossn->password = '"$DBPassword"';\n" \
+     "\n" \
+     "// replace <<dbname>> with your database name;\n" \
+     "$Ossn->database = '"$DBName"';" > /var/www/html/ossn/configurations/ossn.config.db
+
+#ADD proxy-config.conf /etc/apache2/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
-ADD ossn.config.db /var/www/html/ossn/configurations/ossn.config.db
-ADD ossn.config.site /var/www/html/ossn/configurations/ossn.config.site
-
-# Update ossn.config.db configs with variables
-RUN \
-  sed 's/<<host>>/${DBHost}/g' /var/www/html/ossn/configurations/ossn.config.db \
-  's/<<port>>/${DBPort}/g' /var/www/html/ossn/configurations/ossn.config.db \
-  's/<<password>>/${DBPassword}/g' /var/www/html/ossn/configurations/ossn.config.db \
-  's/<<dbname>>/${DBUsername}/g' /var/www/html/ossn/configurations/ossn.config.db
-
-# Update ossn.config.site configs with variables
-RUN \
-  sed 's/<<siteurl>>/${SiteURL}/g' /var/www/html/ossn/configurations/ossn.config.site \
-  's/<<datadir>>/${DataDirectory}/g' /var/www/html/ossn/configurations/ossn.config.site
-
-# Update ossn.conf configs with variables
-RUN \
-  sed 's/<<admin@server>>/${adminlogin}/g' /etc/apache2/sites-available/000-default.conf \
-  's/<<servername>>/${servername}/g' /etc/apache2/sites-available/000-default.conf
+#ADD ossn.config.db /var/www/html/ossn/configurations/ossn.config.db
+#ADD ossn.config.site /var/www/html/ossn/configurations/ossn.config.site
 
 # Manually set the apache environment variables in order to get apache to work immediately.
 RUN \
