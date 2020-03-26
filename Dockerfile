@@ -47,6 +47,7 @@ RUN \
   
 ADD https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip /tmp/build.zip
 RUN unzip /tmp/build.zip -d /tmp
+RUN cp -R /tmp/ossn/. /var/www/html/ossn
 RUN ls /
 RUN ls /var
 RUN ls /var/www
