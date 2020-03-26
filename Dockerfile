@@ -72,7 +72,7 @@ RUN echo \
      "ErrorLog ${APACHE_LOG_DIR}/ossn_error.log\n" \
      "CustomLog ${APACHE_LOG_DIR}/ossn_access.log combined\n" \
      "\n" \
-     "</VirtualHost>" > /etc/apache2/000-default.conf
+     "</VirtualHost>" > /etc/apache2/sites-enabled/000-default.conf
      
 RUN echo \
      "<?php\n" \
