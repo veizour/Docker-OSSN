@@ -66,8 +66,8 @@ echo "     AllowOverride All" >> /etc/apache2/000-default.conf && \
 echo "     Require all granted" >> /etc/apache2/000-default.conf && \
 echo "</Directory>" >> /etc/apache2/000-default.conf && \
 echo "" >> /etc/apache2/000-default.conf && \
-echo "ErrorLog $APACHE_LOG_DIR/ossn_error.log" >> /etc/apache2/000-default.conf && \
-echo "CustomLog $APACHE_LOG_DIR/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
+echo "ErrorLog /$APACHE_LOG_DIR/ossn_error.log" >> /etc/apache2/000-default.conf && \
+echo "CustomLog /$APACHE_LOG_DIR/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
 echo "" >> /etc/apache2/000-default.conf && \
 echo "</VirtualHost>" >> /etc/apache2/000-default.conf
 
@@ -83,8 +83,8 @@ echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://ww
 echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.site.php && \
 echo " */" >> /etc/apache2/ossn.config.site.php && \
 echo "" >> /etc/apache2/ossn.config.site.php && \
-echo "$Ossn->url = '$servername';" >> /etc/apache2/ossn.config.site.php && \
-echo "$Ossn->userdata = '$DataDirectory';" >> /etc/apache2/ossn.config.site.php
+echo "/$Ossn->url = '$servername';" >> /etc/apache2/ossn.config.site.php && \
+echo "/$Ossn->userdata = '$DataDirectory';" >> /etc/apache2/ossn.config.site.php
 
 RUN \
 echo "<?php" > /etc/apache2/ossn.config.db.php && \
