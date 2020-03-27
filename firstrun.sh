@@ -26,7 +26,7 @@ if [ -f /var/www/html/ossn ]; then
   echo "Using OSSN folder found."
 else
   echo "Populating OSSN folder."
-  RUN cp -R /tmp/ossn/. /var/www/html/ossn/.
+  cp -R /tmp/ossn/. /var/www/html/ossn/.
 fi
 
 # Check for OSSN DB config and add
@@ -43,5 +43,5 @@ if [ -f /config/ossn.config.site ]; then
 else
   echo "Creating OSSN Site config from template."
   mv /etc/apache2/ossn.config.site.php /config/ossn.config.site.php
-  RUN service apache2 restart
+  service apache2 restart
 fi
