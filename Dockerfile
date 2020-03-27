@@ -56,9 +56,9 @@ RUN \
 # Update apache configuration with this one
 RUN \
 echo "<VirtualHost *:80>" > /etc/apache2/000-default.conf && \
-echo "ServerAdmin ${adminlogin}"  >> /etc/apache2/000-default.conf && \
+echo "ServerAdmin $adminlogin"  >> /etc/apache2/000-default.conf && \
 echo "DocumentRoot /var/www/html/ossn"  >> /etc/apache2/000-default.conf && \
-echo "ServerName ${servername}"  >> /etc/apache2/000-default.conf && \
+echo "ServerName $servername"  >> /etc/apache2/000-default.conf && \
 echo "" >> /etc/apache2/000-default.conf && \
 echo "<Directory /var/www/html/ossn>"  >> /etc/apache2/000-default.conf && \
 echo "     Options FollowSymlinks" >> /etc/apache2/000-default.conf && \
@@ -66,8 +66,8 @@ echo "     AllowOverride All" >> /etc/apache2/000-default.conf && \
 echo "     Require all granted" >> /etc/apache2/000-default.conf && \
 echo "</Directory>" >> /etc/apache2/000-default.conf && \
 echo "" >> /etc/apache2/000-default.conf && \
-echo "ErrorLog ${APACHE_LOG_DIR}/ossn_error.log" >> /etc/apache2/000-default.conf && \
-echo "CustomLog ${APACHE_LOG_DIR}/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
+echo "ErrorLog $APACHE_LOG_DIR/ossn_error.log" >> /etc/apache2/000-default.conf && \
+echo "CustomLog $APACHE_LOG_DIR/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
 echo "" >> /etc/apache2/000-default.conf && \
 echo "</VirtualHost>" >> /etc/apache2/000-default.conf
 
@@ -83,8 +83,8 @@ echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://ww
 echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.site && \
 echo " */" >> /etc/apache2/ossn.config.site && \
 echo "" >> /etc/apache2/ossn.config.site && \
-echo "$Ossn->url = '${servername}';" >> /etc/apache2/ossn.config.site && \
-echo "$Ossn->userdata = '${DataDirectory}';" >> /etc/apache2/ossn.config.site
+echo "$Ossn->url = '$servername';" >> /etc/apache2/ossn.config.site && \
+echo "$Ossn->userdata = '$DataDirectory';" >> /etc/apache2/ossn.config.site
 
 RUN \
 echo "<?php" > /etc/apache2/ossn.config.db && \
@@ -99,19 +99,19 @@ echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/o
 echo " */" >> /etc/apache2/ossn.config.db && \
 echo "" >> /etc/apache2/ossn.config.db && \
 echo "// replace <<host>> with your database host name;" >> /etc/apache2/ossn.config.db && \
-echo "$Ossn->host = '${DBHost}';" >> /etc/apache2/ossn.config.db && \
+echo "/$Ossn->host = '$DBHost';" >> /etc/apache2/ossn.config.db && \
 echo "" >> /etc/apache2/ossn.config.db && \
 echo "// replace <<port>> with your database host name;" >> /etc/apache2/ossn.config.db && \
-echo "$Ossn->port = '${DBPort}';" >> /etc/apache2/ossn.config.db && \
+echo "/$Ossn->port = '$DBPort';" >> /etc/apache2/ossn.config.db && \
 echo "" >> /etc/apache2/ossn.config.db && \
 echo "// replace <<user>> with your database username;" >> /etc/apache2/ossn.config.db && \
-echo "$Ossn->user = '${DBUser}';" >> /etc/apache2/ossn.config.db && \
+echo "/$Ossn->user = '$DBUser';" >> /etc/apache2/ossn.config.db && \
 echo "" >> /etc/apache2/ossn.config.db && \
 echo "// replace <<password>> with your database password;" >> /etc/apache2/ossn.config.db && \
-echo "$Ossn->password = '${DBPassword}';" >> /etc/apache2/ossn.config.db && \
+echo "/$Ossn->password = '$DBPassword';" >> /etc/apache2/ossn.config.db && \
 echo "" >> /etc/apache2/ossn.config.db && \
 echo "// replace <<dbname>> with your database name;" >> /etc/apache2/ossn.config.db && \
-echo "$Ossn->database = '${DBName}';" >> /etc/apache2/ossn.config.db
+echo "/$Ossn->database = '$DBName';" >> /etc/apache2/ossn.config.db
 
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
