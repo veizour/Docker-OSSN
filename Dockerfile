@@ -41,7 +41,6 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN \
   service apache2 restart && \
   rm -R -f /var/www && \
-  mkdir -p /var/www/html/ossn/configurations && \
   ln -s /web /var/www
 
 RUN \
@@ -49,69 +48,7 @@ RUN \
   rm /etc/apache2/sites-available/* && \
   rm /etc/apache2/apache2.conf && \
   ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
-  ln -s /config/ossn.config.site.php /var/www/html/ossn/configurations/ossn.config.site.php && \
-  ln -s /config/ossn.config.db.php /var/www/html/ossn/configurations/ossn.config.db.php && \
   ln -s /var/log/apache2 /logs
-
-# Update apache configuration with this one
-RUN \
-echo "<VirtualHost *:80>" > /etc/apache2/000-default.conf && \
-echo "ServerAdmin $adminlogin"  >> /etc/apache2/000-default.conf && \
-echo "DocumentRoot /var/www/html/ossn"  >> /etc/apache2/000-default.conf && \
-echo "ServerName $servername"  >> /etc/apache2/000-default.conf && \
-echo "" >> /etc/apache2/000-default.conf && \
-echo "<Directory /var/www/html/ossn>"  >> /etc/apache2/000-default.conf && \
-echo "     Options FollowSymlinks" >> /etc/apache2/000-default.conf && \
-echo "     AllowOverride All" >> /etc/apache2/000-default.conf && \
-echo "     Require all granted" >> /etc/apache2/000-default.conf && \
-echo "</Directory>" >> /etc/apache2/000-default.conf && \
-echo "" >> /etc/apache2/000-default.conf && \
-echo "ErrorLog /$APACHE_LOG_DIR/ossn_error.log" >> /etc/apache2/000-default.conf && \
-echo "CustomLog /$APACHE_LOG_DIR/ossn_access.log combined" >> /etc/apache2/000-default.conf && \
-echo "" >> /etc/apache2/000-default.conf && \
-echo "</VirtualHost>" >> /etc/apache2/000-default.conf
-
-RUN \
-echo "<?php" > /etc/apache2/ossn.config.site.php && \
-echo "/**" >> /etc/apache2/ossn.config.site.php && \
-echo " * Open Source Social Network" >> /etc/apache2/ossn.config.site.php && \
-echo " *" >> /etc/apache2/ossn.config.site.php && \
-echo " * @package   (softlab24.com).ossn" >> /etc/apache2/ossn.config.site.php && \
-echo " * @author    OSSN Core Team <info@softlab24.com>" >> /etc/apache2/ossn.config.site.php && \
-echo " * @copyright (C) SOFTLAB24 LIMITED" >> /etc/apache2/ossn.config.site.php && \
-echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /etc/apache2/ossn.config.site.php && \
-echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.site.php && \
-echo " */" >> /etc/apache2/ossn.config.site.php && \
-echo "" >> /etc/apache2/ossn.config.site.php && \
-echo "/$Ossn->url = '$servername';" >> /etc/apache2/ossn.config.site.php && \
-echo "/$Ossn->userdata = '$DataDirectory';" >> /etc/apache2/ossn.config.site.php
-
-RUN \
-echo "<?php" > /etc/apache2/ossn.config.db.php && \
-echo "/**" >> /etc/apache2/ossn.config.db.php && \
-echo " * Open Source Social Network" >> /etc/apache2/ossn.config.db.php && \
-echo " *" >> /etc/apache2/ossn.config.db.php && \
-echo " * @package   (softlab24.com).ossn" >> /etc/apache2/ossn.config.db.php && \
-echo " * @author    OSSN Core Team <info@softlab24.com>" >> /etc/apache2/ossn.config.db.php && \
-echo " * @copyright (C) SOFTLAB24 LIMITED" >> /etc/apache2/ossn.config.db.php && \
-echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /etc/apache2/ossn.config.db.php && \
-echo " * @link      https://www.opensource-socialnetwork.org/" >> /etc/apache2/ossn.config.db.php && \
-echo " */" >> /etc/apache2/ossn.config.db.php && \
-echo "" >> /etc/apache2/ossn.config.db.php && \
-echo "// replace <<host>> with your database host name;" >> /etc/apache2/ossn.config.db.php && \
-echo "/$Ossn->host = '$DBHost';" >> /etc/apache2/ossn.config.db.php && \
-echo "" >> /etc/apache2/ossn.config.db.php && \
-echo "// replace <<port>> with your database host name;" >> /etc/apache2/ossn.config.db.php && \
-echo "/$Ossn->port = '$DBPort';" >> /etc/apache2/ossn.config.db.php && \
-echo "" >> /etc/apache2/ossn.config.db.php && \
-echo "// replace <<user>> with your database username;" >> /etc/apache2/ossn.config.db.php && \
-echo "/$Ossn->user = '$DBUser';" >> /etc/apache2/ossn.config.db.php && \
-echo "" >> /etc/apache2/ossn.config.db.php && \
-echo "// replace <<password>> with your database password;" >> /etc/apache2/ossn.config.db.php && \
-echo "/$Ossn->password = '$DBPassword';" >> /etc/apache2/ossn.config.db.php && \
-echo "" >> /etc/apache2/ossn.config.db.php && \
-echo "// replace <<dbname>> with your database name;" >> /etc/apache2/ossn.config.db.php && \
-echo "/$Ossn->database = '$DBName';" >> /etc/apache2/ossn.config.db.php
 
 ADD apache2.conf /etc/apache2/apache2.conf
 ADD ports.conf /etc/apache2/ports.conf
