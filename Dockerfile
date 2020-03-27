@@ -41,6 +41,7 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN \
   service apache2 restart && \
   rm -R -f /var/www && \
+  mkdir -p /var/www/html/ossn/configurations && \
   ln -s /web /var/www
 
 RUN \
