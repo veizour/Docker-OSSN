@@ -42,7 +42,16 @@ RUN \
   service apache2 restart && \
   rm -R -f /var/www && \
   ln -s /web /var/www
-  
+
+RUN \
+  mv /etc/apache2/sites-available/000-default.conf /etc/apache2/000-default.conf && \
+  rm /etc/apache2/sites-available/* && \
+  rm /etc/apache2/apache2.conf && \
+  ln -s /config/proxy-config.conf /etc/apache2/sites-available/000-default.conf && \
+  ln -s /config/ossn.config.site /web/html/ossn/configurations/ossn.config.site && \
+  ln -s /config/ossn.config.db /web/html/ossn/configurations/ossn.config.db && \
+  ln -s /var/log/apache2 /logs
+
 # Update apache configuration with this one
 RUN \
 echo "<VirtualHost *:80>" > /etc/apache2/000-default.conf && \
