@@ -25,8 +25,7 @@ CMD ["/sbin/my_init"]
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y mc
-RUN apt-get install -y tmux
+RUN apt-get install -y mc tmux wget
 
 # Install proxy Dependencies
 RUN apt-get install -y apache2
