@@ -34,7 +34,6 @@ if [ -f /config/ossn.config.db ]; then
   echo "Using saved OSSN DB config file."
 else
   echo "Creating OSSN DB config from template."
-  ln -s /config/ossn.config.db /web/html/ossn/configurations/ossn.config.db
   mv /etc/apache2/ossn.config.db /config/ossn.config.db
 fi
 
@@ -43,7 +42,6 @@ if [ -f /config/ossn.config.site ]; then
   echo "Using saved OSSN Site config file."
 else
   echo "Creating OSSN Site config from template."
-  ln -s /config/ossn.config.site /web/html/ossn/configurations/ossn.config.site
   mv /etc/apache2/ossn.config.site /config/ossn.config.site
   RUN service apache2 restart
 fi
