@@ -30,9 +30,9 @@ else
   unzip /tmp/build.zip -d /tmp
   rm /tmp/build.zip
   if [ -d /web/html ]; 
-    then mkdir -p /web/html
+    then mkdir -p /web/html/ossn
   fi
-  mv /tmp/ossn /web/html/
+  mv /tmp/ossn /web/html/ossn
 fi
 
 # Check for OSSN DB config and add
