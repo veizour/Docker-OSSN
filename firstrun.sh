@@ -24,7 +24,7 @@ else
 fi
 
 # Check for OSSN folder
-if [ -f /var/www/html ]; then
+if [ -d /var/www/html ]; then
   echo "Using OSSN folder found."
 else
   echo "Populating OSSN folder."
@@ -37,32 +37,4 @@ else
   fi
   echo "moving ossn"
   mv -v -f /tmp/ossn /var/www/html/
-fi
-
-# Check for OSSN DB config and add
-if [ -f /var/www/html/configurations/ossn.config.db.php ]; then
-  echo "Using saved OSSN DB config file."
-else
-  echo "Creating OSSN DB config from template."
-  cp /var/www/html/configurations/ossn.config.db.example.php /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/replace <<host>>/populate host/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/<<host>>/${DBHost}/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/replace <<port>>/populate port/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/<<port>>/${DBPort}/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/replace <<user>>/populate username/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/<<user>>/${DBUser}/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/replace <<password>>/populate password/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/<<password>>/${DBPassword}/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/replace <<dbname>>/populate server name/g" /var/www/html/configurations/ossn.config.db.php
-  sed -i "s/<<dbname>>/${DBName}/g" /var/www/html/configurations/ossn.config.db.php
-fi
-
-# Check for OSSN Site config and add
-if [ -f /var/www/html/configurations/ossn.config.site.php ]; then
-  echo "Using saved OSSN Site config file."
-else
-  echo "Creating OSSN Site config from template."
-  cp /var/www/html/configurations/ossn.config.site.example.php /var/www/html/configurations/ossn.config.site.php
-     sed -i "s~<<siteurl>>~${servername}~g" /var/www/html/configurations/ossn.config.site.php
-  sed -i "s~<<datadir>>~${DataDirectory}~g" /var/www/html/configurations/ossn.config.site.php
 fi
