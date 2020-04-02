@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ $pull = "true" ]; then
+  if [ -f /var/www/html/configurations/ossn.config.db.php ]; then
+    mv -f /var/www/html/configurations/ossn.config.db.php /tmp/ossn.config.db.php
+  fi
+  if [ -f /var/www/html/configurations/ossn.config.site.php ]; then
+    mv -f /var/www/html/configurations/ossn.config.site.php /tmp/ossn.config.site.php
+  fi
+  rm -R /var/www/html
+fi
+  
 # Check if config exists. If not, copy in the sample config
 if [ -f /config/proxy-config.conf ]; then
   echo "Using saved config file."
