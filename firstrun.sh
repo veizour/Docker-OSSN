@@ -48,3 +48,10 @@ else
   echo "moving ossn"
   mv -v -f /tmp/ossn /var/www/html/
 fi
+
+if [ -f /tmp/ossn.config.db.php ]; then
+  mv -f /tmp/ossn.config.db.php /var/www/html/configurations/ossn.config.db.php
+fi
+if [ -f /tmp/ossn.config.site.php ]; then
+  mv -f /tmp/ossn.config.site.php /var/www/html/configurations/ossn.config.site.php
+fi
