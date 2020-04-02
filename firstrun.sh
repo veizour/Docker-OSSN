@@ -5,7 +5,9 @@ if [ -f /config/proxy-config.conf ]; then
   echo "Using saved config file."
 else
   echo "Creating config from template."
-  mv /etc/apache2/000-default.conf /config/proxy-config.conf
+  sed -i "s/admin@example.com/${adminlogin}/g" /etc/apache2/000-default.conf
+  sed -i "s/example.com/${servername}/g" /etc/apache2/000-default.conf
+  cp -f /etc/apache2/000-default.conf /config/proxy-config.conf
   cp /root/.htpasswd /config/.htpasswd
 fi
 
