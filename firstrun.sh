@@ -32,7 +32,7 @@ else
   if [ -d /web/html ]; 
     then mkdir -p /web/html
   fi
-  mv /tmp/ossn /web/html/.
+  mv /tmp/ossn /web/html/
 fi
 
 # Check for OSSN DB config and add
