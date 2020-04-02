@@ -43,11 +43,11 @@ if [ -f /var/www/html/configurations/ossn.config.db.php ]; then
 else
   echo "Creating OSSN DB config from template."
   cp /var/www/html/configurations/ossn.config.db.example.php /var/www/html/configurations/ossn.config.db.php
-  sed -i 's/<<host>>/$DBHost/2' /var/www/html/configurations/ossn.config.db.php
-  sed -i 's/<<port>>/$DBPort/2' /var/www/html/configurations/ossn.config.db.php
-  sed -i 's/<<user>>/$DBUser/2' /var/www/html/configurations/ossn.config.db.php
-  sed -i 's/<<password>>/$DBPassword/2' /var/www/html/configurations/ossn.config.db.php
-  sed -i 's/<<dbname>>/$DBName/2' /var/www/html/configurations/ossn.config.db.php
+  sed -i 's/\'<<host>>/\'${DBHost}/g' /var/www/html/configurations/ossn.config.db.php
+  sed -i 's/\'<<port>>/\'${DBPort}/g' /var/www/html/configurations/ossn.config.db.php
+  sed -i 's/\'<<user>>/\'${DBUser}/g' /var/www/html/configurations/ossn.config.db.php
+  sed -i 's/\'<<password>>/\'${DBPassword}/g' /var/www/html/configurations/ossn.config.db.php
+  sed -i 's/\'<<dbname>>/\'${DBName}/g' /var/www/html/configurations/ossn.config.db.php
 fi
 
 # Check for OSSN Site config and add
@@ -56,6 +56,6 @@ if [ -f /var/www/html/configurations/ossn.config.site ]; then
 else
   echo "Creating OSSN Site config from template."
   cp /var/www/html/configurations/ossn.config.site.example.php /var/www/html/configurations/ossn.config.site.php
-  sed -i 's/<<siteurl>>/$servername/g' /var/www/html/configurations/ossn.config.site.php
-  sed -i 's/<<datadir>>/$DataDirectory/g' /var/www/html/configurations/ossn.config.site.php
+  sed -i 's/<<siteurl>>/${servername}/g' /var/www/html/configurations/ossn.config.site.php
+  sed -i 's/<<datadir>>/${DataDirectory}/g' /var/www/html/configurations/ossn.config.site.php
 fi
