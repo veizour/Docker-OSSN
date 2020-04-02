@@ -61,6 +61,6 @@ if [ -f /var/www/html/configurations/ossn.config.site ]; then
 else
   echo "Creating OSSN Site config from template."
   cp /var/www/html/configurations/ossn.config.site.example.php /var/www/html/configurations/ossn.config.site.php
-  sed -i "s/<<siteurl>>/${servername}/g" /var/www/html/configurations/ossn.config.site.php
-  sed -i "s/<<datadir>>/${DataDirectory}/g" /var/www/html/configurations/ossn.config.site.php
+     sed -i "s~<<siteurl>>~${servername}~g" /var/www/html/configurations/ossn.config.site.php
+  sed -i "s~<<datadir>>~${DataDirectory}~g" /var/www/html/configurations/ossn.config.site.php
 fi
