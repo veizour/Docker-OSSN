@@ -54,19 +54,19 @@ else
   echo " */" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "// replace <<host>> with your database host name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "/$Ossn->host = '$DBHost';" >> /var/www/html/configurations/ossn.config.db.php && \
+  echo "$Ossn->host = '$DBHost';" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "// replace <<port>> with your database host name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "/$Ossn->port = '$DBPort';" >> /var/www/html/configurations/ossn.config.db.php && \
+  echo "$Ossn->port = '$DBPort';" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "// replace <<user>> with your database username;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "/$Ossn->user = '$DBUser';" >> /var/www/html/configurations/ossn.config.db.php && \
+  echo "$Ossn->user = '$DBUser';" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "// replace <<password>> with your database password;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "/$Ossn->password = '$DBPassword';" >> /var/www/html/configurations/ossn.config.db.php && \
+  echo "$Ossn->password = '$DBPassword';" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "" >> /var/www/html/configurations/ossn.config.db.php && \
   echo "// replace <<dbname>> with your database name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "/$Ossn->database = '$DBName';" >> /var/www/html/configurations/ossn.config.db.php
+  echo "$Ossn->database = '"$DBName"';" >> /var/www/html/configurations/ossn.config.db.php
 fi
 
 # Check for OSSN Site config and add
