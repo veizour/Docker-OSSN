@@ -29,10 +29,10 @@ else
   wget https://www.opensource-socialnetwork.org/download_ossn/latest/build.zip -P /tmp/
   unzip /tmp/build.zip -d /tmp
   rm /tmp/build.zip
-  if [ -d /web/html/ossn ]; 
-    then mkdir -p /web/html/ossn
+  if [ -d /var/www/html/ossn ]; 
+    then mkdir -p /var/www/html/ossn
   fi
-  mv /tmp/ossn /web/html/ossn
+  mv /tmp/ossn /var/www/html/
 fi
 
 # Check for OSSN DB config and add
