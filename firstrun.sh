@@ -42,31 +42,12 @@ if [ -f /var/www/html/configurations/ossn.config.db.php ]; then
   echo "Using saved OSSN DB config file."
 else
   echo "Creating OSSN DB config from template."
-  echo "<?php" > /var/www/html/configurations/ossn.config.db.php && \
-  echo "/**" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * Open Source Social Network" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " *" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * @package   (softlab24.com).ossn" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * @author    OSSN Core Team <info@softlab24.com>" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * @copyright (C) SOFTLAB24 LIMITED" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " * @link      https://www.opensource-socialnetwork.org/" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo " */" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "// replace <<host>> with your database host name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "$Ossn->host = '$DBHost';" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "// replace <<port>> with your database host name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "$Ossn->port = '$DBPort';" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "// replace <<user>> with your database username;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "$Ossn->user = '$DBUser';" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "// replace <<password>> with your database password;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "$Ossn->password = '$DBPassword';" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "// replace <<dbname>> with your database name;" >> /var/www/html/configurations/ossn.config.db.php && \
-  echo "$Ossn->database = '"$DBName"';" >> /var/www/html/configurations/ossn.config.db.php
+  CP /var/www/html/configurations/ossn.config.db.example.php /var/www/html/configurations/ossn.config.db.php
+  sed "s/<<host>>/$DBHost/2" /var/www/html/configurations/ossn.config.db.php
+  sed "s/<<port>>/$DBPort/2" /var/www/html/configurations/ossn.config.db.php
+  sed "s/<<user>>/$DBUser/2" /var/www/html/configurations/ossn.config.db.php
+  sed "s/<<password>>/$DBPassword/2" /var/www/html/configurations/ossn.config.db.php
+  sed "s/<<dbname>>/$DBName/2" /var/www/html/configurations/ossn.config.db.php
 fi
 
 # Check for OSSN Site config and add
@@ -74,17 +55,7 @@ if [ -f /var/www/html/configurations/ossn.config.site ]; then
   echo "Using saved OSSN Site config file."
 else
   echo "Creating OSSN Site config from template."
-  echo "<?php" > /var/www/html/configurations/ossn.config.site.php && \
-  echo "/**" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * Open Source Social Network" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " *" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * @package   (softlab24.com).ossn" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * @author    OSSN Core Team <info@softlab24.com>" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * @copyright (C) SOFTLAB24 LIMITED" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " * @link      https://www.opensource-socialnetwork.org/" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo " */" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo "" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo "/$Ossn->url = '$servername';" >> /var/www/html/configurations/ossn.config.site.php && \
-  echo "/$Ossn->userdata = '$DataDirectory';" >> /var/www/html/configurations/ossn.config.site.php
+  cp /var/www/html/configurations/ossn.config.site.example.php /var/www/html/configurations/ossn.config.site.php
+  sed "s/<<siteurl>>/$servername" /var/www/html/configurations/ossn.config.site.php
+  sed "s/<<datadir>>/$DataDirectory" /var/www/html/configurations/ossn.config.site.php
 fi
