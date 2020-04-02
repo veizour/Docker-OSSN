@@ -58,7 +58,7 @@ else
 fi
 
 # Check for OSSN Site config and add
-if [ -f /var/www/html/configurations/ossn.config.site ]; then
+if [ -f /var/www/html/configurations/ossn.config.site.php ]; then
   echo "Using saved OSSN Site config file."
 else
   echo "Creating OSSN Site config from template."
